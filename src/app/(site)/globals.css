@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------
+ * Design tokens
+ * A single source of truth for color and typography, per PROJECT_PLAN.md
+ * §6. Never hardcode a hex color or font-size in a component — extend the
+ * tokens below instead.
+ * ------------------------------------------------------------------- */
+:root {
+  /* Brand green — deep, agricultural, used for CTAs, links, dark sections */
+  --color-brand-50: #f1f7f3;
+  --color-brand-100: #dfeee4;
+  --color-brand-200: #b9dcc6;
+  --color-brand-300: #8cc3a3;
+  --color-brand-400: #5a9f79;
+  --color-brand-500: #2f7f56;
+  --color-brand-600: #1f6b47;
+  --color-brand-700: #17573a;
+  --color-brand-800: #123f2b;
+  --color-brand-900: #0b2a1d;
+
+  /* Graphite — near-black neutral, distinct from brand green, for text and
+     the darkest chrome (header-on-scroll, footer). */
+  --color-graphite-900: #14171a;
+  --color-graphite-800: #22262b;
+  --color-graphite-700: #3a3f44;
+
+  /* Neutral gray scale — body text, borders, muted backgrounds */
+  --color-neutral-600: #5b6168;
+  --color-neutral-400: #8b9096;
+  --color-neutral-300: #b4b9be;
+  --color-neutral-200: #dde1e4;
+  --color-neutral-100: #eef0f2;
+  --color-neutral-50: #f7f8f9;
+
+  /* Base */
+  --color-base-white: #ffffff;
+  --color-base-offwhite: #faf9f6;
+
+  /* Restrained natural-green accent — used sparingly (small tags, icon
+     fills, hover underlines), never as a section background. */
+  --color-accent-500: #7a9c3f;
+  --color-accent-600: #648233;
+
+  /* Fluid type scale (clamp: min, preferred, max). Tailwind v4 generates a
+     `text-{name}` utility for every `--text-*` theme key automatically, and
+     picks up the paired `--text-{name}--line-height` as that utility's
+     default line-height. */
+  --text-display: clamp(2.75rem, 2.05rem + 2.6vw, 4.5rem);
+  --text-display--line-height: 1.05;
+  --text-h1: clamp(2.25rem, 1.85rem + 1.6vw, 3.25rem);
+  --text-h1--line-height: 1.1;
+  --text-h2: clamp(1.75rem, 1.55rem + 0.85vw, 2.5rem);
+  --text-h2--line-height: 1.15;
+  --text-h3: clamp(1.375rem, 1.25rem + 0.5vw, 1.75rem);
+  --text-h3--line-height: 1.25;
+  --text-body-lg: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+  --text-body-lg--line-height: 1.6;
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.4;
+  --text-button: 1rem;
+  --text-button--line-height: 1;
+}
+
+@theme inline {
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-200: var(--color-brand-200);
+  --color-brand-300: var(--color-brand-300);
+  --color-brand-400: var(--color-brand-400);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+  --color-brand-800: var(--color-brand-800);
+  --color-brand-900: var(--color-brand-900);
+
+  --color-graphite-900: var(--color-graphite-900);
+  --color-graphite-800: var(--color-graphite-800);
+  --color-graphite-700: var(--color-graphite-700);
+
+  --color-neutral-600: var(--color-neutral-600);
+  --color-neutral-400: var(--color-neutral-400);
+  --color-neutral-300: var(--color-neutral-300);
+  --color-neutral-200: var(--color-neutral-200);
+  --color-neutral-100: var(--color-neutral-100);
+  --color-neutral-50: var(--color-neutral-50);
+
+  --color-base-white: var(--color-base-white);
+  --color-base-offwhite: var(--color-base-offwhite);
+
+  --color-accent-500: var(--color-accent-500);
+  --color-accent-600: var(--color-accent-600);
+
+  --text-display: var(--text-display);
+  --text-display--line-height: var(--text-display--line-height);
+  --text-h1: var(--text-h1);
+  --text-h1--line-height: var(--text-h1--line-height);
+  --text-h2: var(--text-h2);
+  --text-h2--line-height: var(--text-h2--line-height);
+  --text-h3: var(--text-h3);
+  --text-h3--line-height: var(--text-h3--line-height);
+  --text-body-lg: var(--text-body-lg);
+  --text-body-lg--line-height: var(--text-body-lg--line-height);
+  --text-body: var(--text-body);
+  --text-body--line-height: var(--text-body--line-height);
+  --text-caption: var(--text-caption);
+  --text-caption--line-height: var(--text-caption--line-height);
+  --text-button: var(--text-button);
+  --text-button--line-height: var(--text-button--line-height);
+
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+}
+
+/* ---------------------------------------------------------------------
+ * Base
+ * ------------------------------------------------------------------- */
+body {
+  background: var(--color-base-offwhite);
+  color: var(--color-graphite-900);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Visible, on-brand focus ring for keyboard navigation (WCAG 2.4.7) */
+:focus-visible {
+  outline: 2px solid var(--color-brand-600);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Respect the OS-level reduced-motion preference everywhere. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
