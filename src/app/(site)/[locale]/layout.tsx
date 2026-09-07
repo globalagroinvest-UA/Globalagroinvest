@@ -99,7 +99,7 @@ export default async function LocaleLayout({
       "@type": "PostalAddress",
       streetAddress: siteSettings.address,
     },
-    sameAs: siteSettings.socialLinks.map((link) => link.url),
+    sameAs: siteSettings?.socialLinks?.map((link) => link?.url) || [],
   });
 
   return (
