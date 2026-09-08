@@ -63,6 +63,7 @@ const uk: Dictionary = {
   contactsPage: {
     contactInfoHeading: "Контактна інформація",
     mapTitle: "Карта — місцезнаходження компанії",
+    openInGoogleMaps: "Відкрити в Google Maps",
     formHeading: "Написати нам",
     formSubtitle: "Заповніть форму — ми зв'яжемося з вами найближчим часом.",
   },

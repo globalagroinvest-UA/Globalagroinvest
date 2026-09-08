@@ -65,6 +65,7 @@ const en: Dictionary = {
   contactsPage: {
     contactInfoHeading: "Contact information",
     mapTitle: "Map — company location",
+    openInGoogleMaps: "Open in Google Maps",
     formHeading: "Send us a message",
     formSubtitle: "Fill out the form and we'll get back to you shortly.",
   },

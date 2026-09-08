@@ -50,8 +50,18 @@ export const siteSettings = defineType({
       name: "mapEmbedUrl",
       title: "Посилання для карти (Google Maps embed)",
       description:
-        "URL з атрибута src при вставці карти через Google Maps → Поділитися → Вставити карту.",
+        'Тільки посилання для ВСТАВКИ карти: Google Maps → Поділитися → вкладка "Вставити карту" → скопіювати URL з атрибута src (він виглядає як https://www.google.com/maps/embed?pb=...). ' +
+        'Звичайне посилання "Надіслати посилання" (google.com/maps/place/... або coротке maps.app.goo.gl/...) сюди НЕ підходить — Google Maps блокує показ таких посилань у рамці на сайті, і замість карти буде показано помилку "відхилив запит на з\'єднання".',
       type: "url",
+      validation: (rule) =>
+        rule.uri({ scheme: ["https"] }).custom((value) => {
+          if (!value) return true;
+          const isEmbed = /^https:\/\/(www\.)?google\.com\/maps\/embed(\?|\/|$)/.test(value)
+            || /[?&]output=embed(&|$)/.test(value);
+          return isEmbed
+            ? true
+            : "Це не схоже на посилання для вставки карти. Скопіюйте URL саме з вкладки \"Вставити карту\" (Embed a map), інакше карта не відобразиться на сайті.";
+        }),
     }),
     defineField({
       name: "workingHours",

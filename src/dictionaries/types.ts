@@ -64,6 +64,7 @@ export type Dictionary = {
   contactsPage: {
     contactInfoHeading: string;
     mapTitle: string;
+    openInGoogleMaps: string;
     formHeading: string;
     formSubtitle: string;
   };

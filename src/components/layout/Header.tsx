@@ -69,7 +69,16 @@ export function Header({
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
         solid
-          ? "bg-base-white/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-base-white/80"
+          ? menuOpen
+            ? // No backdrop-blur while the mobile menu is open: `filter`/
+              // `backdrop-filter` on this element would make it the
+              // containing block for its `position: fixed` descendants
+              // (the menu panel below) instead of the viewport — collapsing
+              // the panel's computed height to ~0 and making its background
+              // invisible even though the class is applied. Fully opaque
+              // white gives the same solid look without that side effect.
+              "bg-base-white shadow-sm"
+            : "bg-base-white/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-base-white/80"
           : "bg-transparent",
       )}
     >

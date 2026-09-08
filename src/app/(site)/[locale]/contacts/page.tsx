@@ -8,6 +8,7 @@ import { Section } from "@/components/ui/Section";
 import { getDictionary } from "@/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
 import { localizedHref } from "@/lib/i18n-links";
+import { getAddressEmbedUrl, getAddressMapSearchUrl, getEmbeddableMapUrl } from "@/lib/google-maps";
 import { getContactsPage, getSiteSettings } from "@/lib/sanity/fetch";
 import { localeAlternates } from "@/lib/seo";
 
@@ -86,17 +87,48 @@ export default async function ContactsPage({ params }: { params: Promise<Params>
             </li>
           </ul>
 
-          {siteSettings.mapEmbedUrl && (
-            <div className="mt-8 aspect-video overflow-hidden rounded-md">
-              <iframe
-                src={siteSettings.mapEmbedUrl}
-                title={dict.contactsPage.mapTitle}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="h-full w-full border-0"
-              />
-            </div>
-          )}
+          {(() => {
+            // `mapEmbedUrl` is free text typed by a non-technical editor in
+            // Sanity, so we never trust it's actually embeddable — see
+            // src/lib/google-maps.ts for why a regular Google Maps "share"
+            // link can't be put in an <iframe> (Google itself refuses the
+            // connection). We only ever render an <iframe> when the URL
+            // matches an embeddable shape; otherwise we fall back to an
+            // address-based embed, and finally to a plain link.
+            const embedUrl =
+              getEmbeddableMapUrl(siteSettings.mapEmbedUrl) ||
+              (siteSettings.address ? getAddressEmbedUrl(siteSettings.address) : null);
+
+            if (embedUrl) {
+              return (
+                <div className="mt-8 aspect-video overflow-hidden rounded-md">
+                  <iframe
+                    src={embedUrl}
+                    title={dict.contactsPage.mapTitle}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="h-full w-full border-0"
+                  />
+                </div>
+              );
+            }
+
+            if (siteSettings.address) {
+              return (
+                <a
+                  href={getAddressMapSearchUrl(siteSettings.address)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center gap-2 text-body font-medium text-brand-600 hover:text-brand-700"
+                >
+                  <MapPin size={18} aria-hidden="true" />
+                  {dict.contactsPage.openInGoogleMaps}
+                </a>
+              );
+            }
+
+            return null;
+          })()}
         </div>
 
         <div className="rounded-md bg-base-white p-6 shadow-sm ring-1 ring-neutral-100 sm:p-8">
